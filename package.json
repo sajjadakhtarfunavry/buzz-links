@@ -10,7 +10,8 @@
     "tail": "wrangler tail",
     "kv:create": "wrangler kv namespace create BUZZ_LINKS_LINKS",
     "kv:create-ratelimit": "wrangler kv namespace create RATE_LIMIT_KV",
-    "queue:create": "wrangler queues create buzz-link-clicks"
+    "queue:create": "wrangler queues create buzz-link-clicks",
+    "queue:create-dev": "wrangler queues create buzz-link-clicks-dev"
   },
   "devDependencies": {
     "wrangler": "^4.62.0"

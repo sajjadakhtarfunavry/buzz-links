@@ -123,7 +123,8 @@ See **`.env.example`** for a template. Copy it to `.env` or `.dev.vars` and fill
 | `yarn tail` | Stream live logs. |
 | `yarn kv:create` | Create KV namespace for link cache. |
 | `yarn kv:create-ratelimit` | Create KV namespace for rate limiting. |
-| `yarn queue:create` | Create Queue for click events. |
+| `yarn queue:create` | Create Queue for click events (production). |
+| `yarn queue:create-dev` | Create Queue for development (required before first dev deploy). |
 
 ---
 
@@ -135,6 +136,8 @@ See **`.env.example`** for a template. Copy it to `.env` or `.dev.vars` and fill
 |-------------|---------------------------|------------------------------------------|
 | `main`      | buzz-links-redirect       | `buzz-links-redirect.<account>.workers.dev` |
 | `development` | buzz-links-redirect-dev | `buzz-links-redirect-dev.<account>.workers.dev` |
+
+**Before first dev deploy:** run `yarn queue:create-dev` to create the dev queue (`buzz-link-clicks-dev`). Each queue can have only one consumer, so dev uses a separate queue.
 
 ### Option 1: Manual (local)
 

@@ -1,5 +1,6 @@
 # Buzz Links Edge Redirect — Cloudflare Worker (standalone repo)
 # PRD: see docs/PRD in Launchpad Backend repo
+name = "buzz-links-redirect"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
@@ -29,6 +30,7 @@ FF_V2_BUZZ_LINKS = "true"
 RATE_LIMIT_REQUESTS_PER_MINUTE = "100"
 
 # Development: buzz-links-redirect-dev.<account>.workers.dev
+# Uses separate queue (buzz-link-clicks-dev) — each queue can have only one consumer.
 [env.development]
 name = "buzz-links-redirect-dev"
 
@@ -41,11 +43,11 @@ binding = "RATE_LIMIT_KV"
 id = "c6984b4828c14f87865962044095ec3a"
 
 [[env.development.queues.producers]]
-queue = "buzz-link-clicks"
+queue = "buzz-link-clicks-dev"
 binding = "CLICKS_QUEUE"
 
 [[env.development.queues.consumers]]
-queue = "buzz-link-clicks"
+queue = "buzz-link-clicks-dev"
 max_batch_size = 10
 max_batch_timeout = 5
 
