@@ -1,37 +1,12 @@
-name: CI/CD
+name: Deploy to Cloudflare
 
 on:
   push:
     branches: [main, development]
-  pull_request:
-    branches: [main, development]
   workflow_dispatch:
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "yarn"
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Validate build (dry-run)
-        run: yarn wrangler deploy --dry-run
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        if: secrets.CLOUDFLARE_API_TOKEN != ''
-
   deploy:
-    needs: ci
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
