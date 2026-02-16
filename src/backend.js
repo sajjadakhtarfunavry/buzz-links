@@ -14,7 +14,6 @@ import {
  */
 export async function fetchLinkFromBackendWebhook(env, slug) {
   const base = (env.BACKEND_FALLBACK_URL || '').replace(/\/$/, '');
-  console.log("🚀 ~ fetchLinkFromBackendWebhook ~ base:", base)
   const secret = env.BUZZ_LINKS_WEBHOOK_SECRET;
   if (!base || !secret) return null;
 
