@@ -1,0 +1,17 @@
+{
+  "name": "bzz-link-edge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare Worker for bzz.link redirect (Buzz Links edge) — standalone repo",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "kv:create": "wrangler kv namespace create BUZZ_LINKS_LINKS",
+    "kv:create-ratelimit": "wrangler kv namespace create RATE_LIMIT_KV",
+    "queue:create": "wrangler queues create buzz-link-clicks"
+  },
+  "devDependencies": {
+    "wrangler": "^4.62.0"
+  }
+}
