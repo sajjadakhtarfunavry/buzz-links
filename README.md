@@ -118,7 +118,8 @@ See **`.env.example`** for a template. Copy it to `.env` or `.dev.vars` and fill
 | Command | Description |
 |---------|-------------|
 | `yarn dev` | Local dev server (Wrangler). |
-| `yarn deploy` | Deploy Worker to Cloudflare. |
+| `yarn deploy` | Deploy Worker to production. |
+| `yarn deploy:dev` | Deploy Worker to development. |
 | `yarn tail` | Stream live logs. |
 | `yarn kv:create` | Create KV namespace for link cache. |
 | `yarn kv:create-ratelimit` | Create KV namespace for rate limiting. |
@@ -128,23 +129,31 @@ See **`.env.example`** for a template. Copy it to `.env` or `.dev.vars` and fill
 
 ## Deployment
 
+### Environments
+
+| Branch       | Worker                   | URL                                      |
+|-------------|---------------------------|------------------------------------------|
+| `main`      | buzz-links-redirect       | `buzz-links-redirect.<account>.workers.dev` |
+| `development` | buzz-links-redirect-dev | `buzz-links-redirect-dev.<account>.workers.dev` |
+
 ### Option 1: Manual (local)
 
 ```bash
-yarn deploy
+yarn deploy        # production
+yarn deploy:dev    # development
 ```
 
 Uses your local Wrangler login and `wrangler.toml`. Good for one-off or solo deploys.
 
 ### Option 2: GitHub Actions (recommended)
 
-Deploy automatically on push to `main` (or trigger manually).
+Deploy automatically on push to `main` (production) or `development` (dev).
 
 1. In **Cloudflare dashboard**: My Profile → API Tokens → Create Token → use “Edit Cloudflare Workers” template. Copy the token.
 2. In **GitHub**: repo → Settings → Secrets and variables → Actions → New repository secret:
    - `CLOUDFLARE_API_TOKEN` = the token from step 1
    - `CLOUDFLARE_ACCOUNT_ID` = your Cloudflare account ID (dashboard URL or Workers overview)
-3. Push to `main` (or run the “Deploy” workflow manually from the Actions tab).
+3. Push to `main` (production) or `development` (dev), or run the “Deploy” workflow manually from the Actions tab.
 
 The workflow is in **`.github/workflows/deploy.yml`**. Worker **secrets** (`BACKEND_FALLBACK_URL`, `BUZZ_LINKS_WEBHOOK_SECRET`, etc.) are not in GitHub; set them once in the Cloudflare dashboard (Workers → your Worker → Settings → Variables and Secrets) or via `wrangler secret put` locally.
 

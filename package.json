@@ -5,7 +5,8 @@
   "description": "Cloudflare Worker for bzz.link redirect (Buzz Links edge) — standalone repo",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --env production",
+    "deploy:dev": "wrangler deploy --env development",
     "tail": "wrangler tail",
     "kv:create": "wrangler kv namespace create BUZZ_LINKS_LINKS",
     "kv:create-ratelimit": "wrangler kv namespace create RATE_LIMIT_KV",

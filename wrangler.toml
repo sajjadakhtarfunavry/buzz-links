@@ -1,33 +1,54 @@
 # Buzz Links Edge Redirect — Cloudflare Worker (standalone repo)
 # PRD: see docs/PRD in Launchpad Backend repo
-name = "buzz-links-redirect"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
-# Route: add in Cloudflare dashboard after first deploy
-# e.g. bzz.link/*
+# Production: bzz-links-redirect.<account>.workers.dev
+[env.production]
+name = "buzz-links-redirect"
 
-# KV namespace for link cache (create with: npm run kv:create)
-[[kv_namespaces]]
+[[env.production.kv_namespaces]]
 binding = "LINKS_KV"
 id = "a940f696a60d43bd933b76b8a294c22b"
 
-# Optional: KV for rate-limit counters
-[[kv_namespaces]]
+[[env.production.kv_namespaces]]
 binding = "RATE_LIMIT_KV"
 id = "c6984b4828c14f87865962044095ec3a"
 
-# Queue for click events (create with: npm run queue:create)
-[[queues.producers]]
+[[env.production.queues.producers]]
 queue = "buzz-link-clicks"
 binding = "CLICKS_QUEUE"
 
-# Consumer: process click events and POST to backend ingest
-[[queues.consumers]]
+[[env.production.queues.consumers]]
 queue = "buzz-link-clicks"
 max_batch_size = 10
 max_batch_timeout = 5
 
-[vars]
+[env.production.vars]
+FF_V2_BUZZ_LINKS = "true"
+RATE_LIMIT_REQUESTS_PER_MINUTE = "100"
+
+# Development: buzz-links-redirect-dev.<account>.workers.dev
+[env.development]
+name = "buzz-links-redirect-dev"
+
+[[env.development.kv_namespaces]]
+binding = "LINKS_KV"
+id = "a940f696a60d43bd933b76b8a294c22b"
+
+[[env.development.kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "c6984b4828c14f87865962044095ec3a"
+
+[[env.development.queues.producers]]
+queue = "buzz-link-clicks"
+binding = "CLICKS_QUEUE"
+
+[[env.development.queues.consumers]]
+queue = "buzz-link-clicks"
+max_batch_size = 10
+max_batch_timeout = 5
+
+[env.development.vars]
 FF_V2_BUZZ_LINKS = "true"
 RATE_LIMIT_REQUESTS_PER_MINUTE = "100"
